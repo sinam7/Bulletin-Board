@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>회원 목록</h2>
+    </div>
+
+    <table class="table">
+        <thead>
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Password</th>
+        <th scope="col">Name</th>
+        </thead>
+        <tbody>
+            <tr th:each="member : ${members}">
+                <td th:text="${member.getId()}">#</td>
+                <td th:text="${member.getMemberId()}">로그인ID</td>
+                <td th:text="${member.getPassword()}">비밀번호</td>
+                <td th:text="${member.getName()}">닉네임</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
 
 </body>
 </html>
