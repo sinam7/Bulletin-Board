@@ -1,5 +1,7 @@
 package com.sinam7.bulletinboard;
 
+import com.sinam7.bulletinboard.domain.article.Article;
+import com.sinam7.bulletinboard.domain.article.ArticleRepository;
 import com.sinam7.bulletinboard.domain.member.Member;
 import com.sinam7.bulletinboard.domain.member.MemberRepository;
 import jakarta.annotation.PostConstruct;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class WebDataInit {
 
     private final MemberRepository memberRepository;
+    private final ArticleRepository articleRepository;
 
     @PostConstruct
     public void init() {
@@ -20,5 +23,12 @@ public class WebDataInit {
         member.setName("테스터");
 
         memberRepository.save(member);
+
+        Article article = new Article();
+        article.setTitle("testTitle");
+        article.setContent("testContent1\ntestContent2");
+        article.setWriter(member);
+
+        articleRepository.save(article);
     }
 }

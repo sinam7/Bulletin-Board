@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+    href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+
+        .newline {
+            white-space: pre-wrap;
+        }
+    </style>
+    <title>글 열람</title>
+</head>
+<body>
+<div class="container">
+
+    <div class="py-4 text-center">
+        <h2><span th:text="${article.title}">(글 제목)</span></h2>
+    </div>
+
+    <div class="pb-2 d-flex justify-content-between">
+        <span th:text="${article.getWriterName()}">(글 작성자)</span>
+        <span th:text="${article.getDateTimeFormat()}">(작성 시각)</span>
+    </div>
+    <hr class="my-2">
+
+    <div class="newline" th:text="${article.content}">(글 내용)</div>
+
+</div>
+
+
+</body>
+
+
+</html>
