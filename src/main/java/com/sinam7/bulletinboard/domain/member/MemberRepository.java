@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemberRepository {
 
-    private static Map<Long, Member> memberStore = new ConcurrentHashMap<>();
+    private static final Map<Long, Member> memberStore = new ConcurrentHashMap<>();
     private static Long sequence = 0L;
 
     public Long save(Member member) {
@@ -30,6 +30,11 @@ public class MemberRepository {
         return findAll().stream()
                 .filter(member -> member.getMemberId().equals(memberId))
                 .findFirst();
+    }
+
+    public void updateMember(Long id, Member member) {
+        member.setId(id);
+        memberStore.put(id, member);
     }
 
     public void deleteMember(Member member) {

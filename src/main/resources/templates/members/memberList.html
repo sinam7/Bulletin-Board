@@ -29,10 +29,10 @@
         </thead>
         <tbody>
             <tr th:each="member : ${members}">
-                <td th:text="${member.getId()}">#</td>
-                <td th:text="${member.getMemberId()}">로그인ID</td>
-                <td th:text="${member.getPassword()}">비밀번호</td>
-                <td th:text="${member.getName()}">닉네임</td>
+                <td th:text="${member.id}">#</td>
+                <td><a th:href="@{/members/edit/{id}(id=${member.id})}" th:text="${member.memberId}">로그인ID<</a></td>
+                <td th:text="${member.password}">비밀번호</td>
+                <td th:text="${member.name}">닉네임</td>
             </tr>
         </tbody>
     </table>
