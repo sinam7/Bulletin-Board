@@ -8,10 +8,6 @@
         .container {
             max-width: 560px;
         }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
     </style>
 </head>
 <body>
@@ -24,10 +20,12 @@
 
     <table class="table">
         <thead>
-        <th scope="col">#</th>
-        <th scope="col">ID</th>
-        <th scope="col">Password</th>
-        <th scope="col">Name</th>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Password</th>
+            <th scope="col">Name</th>
+        </tr>
         </thead>
         <tbody>
             <tr th:each="member : ${members}">
@@ -38,6 +36,11 @@
             </tr>
         </tbody>
     </table>
+    <hr class="py-1 my-4">
+    <button type="button" onclick="location.href='addMemberForm.html'"
+            th:onclick="|location.href='@{/members/add}'|" class="btn btn-primary mb-2">회원 가입</button>
+    <button type="button" onclick="location.href='../index.html'"
+            th:onclick="|location.href='@{/}'|" class="btn btn-secondary mb-2">처음으로</button>
 
 </div>
 

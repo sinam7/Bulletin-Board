@@ -29,15 +29,15 @@ public class MemberController {
     }
 
     // 회원 가입 폼 호출
-    @GetMapping("/register")
-    public String registerMemberForm(@ModelAttribute("member") Member member) {
+    @GetMapping("/add")
+    public String addMemberForm(@ModelAttribute("member") Member member) {
         log.info("registerMemberForm() call - GET");
-        return "members/registerMemberForm";
+        return "members/addMemberForm";
     }
 
     // 회원 가입 처리
-    @PostMapping("/register")
-    public String registerMember(@ModelAttribute("member") Member member) {
+    @PostMapping("/add")
+    public String addMember(@ModelAttribute("member") Member member) {
         log.info("registerMemberForm() call - POST");
         memberRepository.save(member);
         return "redirect:/members";
