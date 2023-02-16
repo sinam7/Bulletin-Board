@@ -6,7 +6,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-@Data()
+@Data
 public class Article {
     private Long id;
     private String title;

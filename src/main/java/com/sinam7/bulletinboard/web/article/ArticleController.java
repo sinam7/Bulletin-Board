@@ -1,13 +1,12 @@
 package com.sinam7.bulletinboard.web.article;
 
+import com.sinam7.bulletinboard.domain.article.Article;
 import com.sinam7.bulletinboard.domain.article.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,5 +28,32 @@ public class ArticleController {
         log.info("article({}) call", id);
         model.addAttribute("article", articleRepository.findById(id));
         return "article/articleView";
+    }
+
+    @GetMapping("/add")
+    public String addArticleForm(@ModelAttribute("article") Article article) {
+        log.info("addArticleForm() call - GET");
+        return "article/addArticleForm";
+    }
+
+    @PostMapping("/add")
+    public String addArticle(@ModelAttribute("article") Article article) {
+        log.info("addArticle() call - POST");
+        Long id = articleRepository.save(article);
+        return "redirect:/board/" + id;
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editArticleForm(@PathVariable("id") Long id, Model model) {
+        log.info("editArticle({}) call", id);
+        model.addAttribute("article", articleRepository.findById(id));
+        return "article/editArticleForm";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editArticle(@PathVariable("id") Long id, @ModelAttribute("article") Article article) {
+        log.info("editArticle({}) call", id);
+        articleRepository.update(id, article);
+        return "redirect:/board/" + id;
     }
 }

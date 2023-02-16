@@ -29,14 +29,15 @@ public class ArticleRepository {
         return new ArrayList<>(articleStore.values());
     }
 
-    public boolean update(Long id, Article updateArticle) {
+    public void update(Long id, Article updateArticle) {
         if (articleStore.containsKey(id)) {
             updateArticle.setId(id);
+            // todo EditArticleDTO 만들어서 깔끔하게 처리
+            updateArticle.setTimestamp(new Timestamp(System.currentTimeMillis()));
+
             articleStore.put(id, updateArticle);
-            return true;
         }
 
-        return false;
     }
 
     public void remove(Long id) {
