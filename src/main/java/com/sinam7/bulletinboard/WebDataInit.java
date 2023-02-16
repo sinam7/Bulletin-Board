@@ -4,6 +4,7 @@ import com.sinam7.bulletinboard.domain.article.Article;
 import com.sinam7.bulletinboard.domain.article.ArticleRepository;
 import com.sinam7.bulletinboard.domain.member.Member;
 import com.sinam7.bulletinboard.domain.member.MemberRepository;
+import com.sinam7.bulletinboard.web.member.dto.MemberFormDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,11 @@ public class WebDataInit {
 
     @PostConstruct
     public void init() {
-        Member member = new Member();
-        member.setMemberId("test");
-        member.setPassword("test");
-        member.setName("테스터");
+        MemberFormDTO memberFormDTO = new MemberFormDTO("test", "test", "테스터");
 
-        memberRepository.save(member);
+        Long memberId = memberRepository.save(memberFormDTO);
+
+        Member member = memberRepository.findById(memberId);
 
         Article article = new Article();
         article.setTitle("testTitle");

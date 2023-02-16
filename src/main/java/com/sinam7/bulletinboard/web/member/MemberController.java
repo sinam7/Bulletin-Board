@@ -1,11 +1,13 @@
 package com.sinam7.bulletinboard.web.member;
 
-import com.sinam7.bulletinboard.domain.member.Member;
 import com.sinam7.bulletinboard.domain.member.MemberRepository;
+import com.sinam7.bulletinboard.web.member.dto.MemberFormDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -27,16 +29,22 @@ public class MemberController {
 
     // 회원 가입 폼 호출
     @GetMapping("/add")
-    public String addMemberForm(@ModelAttribute("member") Member member) {
+    public String addMemberForm(@ModelAttribute("member") MemberFormDTO memberFormDTO) {
         log.info("addMemberForm() call - GET");
         return "members/addMemberForm";
     }
 
     // 회원 가입 처리
     @PostMapping("/add")
-    public String addMember(@ModelAttribute("member") Member member) {
-        log.info("addMemberForm() call - POST");
-        memberRepository.save(member);
+    public String addMember(@Validated @ModelAttribute("member") MemberFormDTO memberFormDTO, BindingResult bindingResult) {
+        log.info("addMember() call - POST");
+
+        if (bindingResult.hasErrors()) {
+            log.error("addMember() ex = {}", bindingResult);
+            return "members/addMemberForm";
+        }
+
+        memberRepository.save(memberFormDTO);
         return "redirect:/members";
     }
 
@@ -48,9 +56,16 @@ public class MemberController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editMember(@PathVariable("id") Long id, @ModelAttribute Member member) {
+    public String editMember(@PathVariable("id") Long id,
+                             @Validated @ModelAttribute("member") MemberFormDTO memberFormDTO, BindingResult bindingResult) {
         log.info("editMemberForm() call - POST");
-        memberRepository.updateMember(id, member);
+
+        if (bindingResult.hasErrors()) {
+            log.error("addMember() ex = {}", bindingResult);
+            return "members/editMemberForm";
+        }
+
+        memberRepository.updateMember(id, memberFormDTO);
         return "redirect:/members";
     }
 }

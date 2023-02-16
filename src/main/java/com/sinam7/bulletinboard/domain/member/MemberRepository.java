@@ -1,5 +1,6 @@
 package com.sinam7.bulletinboard.domain.member;
 
+import com.sinam7.bulletinboard.web.member.dto.MemberFormDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,9 +15,8 @@ public class MemberRepository {
     private static final Map<Long, Member> memberStore = new ConcurrentHashMap<>();
     private static Long sequence = 0L;
 
-    public Long save(Member member) {
-        member.setId(++sequence);
-
+    public Long save(MemberFormDTO memberFormDTO) {
+        Member member = MemberFormDTO.buildMember(++sequence, memberFormDTO);
         memberStore.put(member.getId(), member);
 
         return member.getId();
@@ -32,8 +32,8 @@ public class MemberRepository {
                 .findFirst();
     }
 
-    public void updateMember(Long id, Member member) {
-        member.setId(id);
+    public void updateMember(Long id, MemberFormDTO memberFormDTO) {
+        Member member = MemberFormDTO.buildMember(id, memberFormDTO);
         memberStore.put(id, member);
     }
 
