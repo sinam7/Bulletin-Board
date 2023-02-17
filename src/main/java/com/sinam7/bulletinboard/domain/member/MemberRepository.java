@@ -1,6 +1,6 @@
 package com.sinam7.bulletinboard.domain.member;
 
-import com.sinam7.bulletinboard.web.member.dto.MemberFormDTO;
+import com.sinam7.bulletinboard.domain.member.dto.MemberFormDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

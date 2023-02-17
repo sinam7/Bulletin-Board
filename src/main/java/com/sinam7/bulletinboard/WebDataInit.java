@@ -4,7 +4,7 @@ import com.sinam7.bulletinboard.domain.article.Article;
 import com.sinam7.bulletinboard.domain.article.ArticleRepository;
 import com.sinam7.bulletinboard.domain.member.Member;
 import com.sinam7.bulletinboard.domain.member.MemberRepository;
-import com.sinam7.bulletinboard.web.member.dto.MemberFormDTO;
+import com.sinam7.bulletinboard.domain.member.dto.MemberFormDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

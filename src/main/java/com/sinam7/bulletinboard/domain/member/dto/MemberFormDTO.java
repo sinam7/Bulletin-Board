@@ -1,7 +1,8 @@
-package com.sinam7.bulletinboard.web.member.dto;
+package com.sinam7.bulletinboard.domain.member.dto;
 
 import com.sinam7.bulletinboard.domain.member.Member;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,9 +10,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberFormDTO {
 
-    @NotBlank private String memberId;
-    @NotBlank private String password;
-    @NotBlank private String name;
+    @NotBlank
+    private String memberId;
+    @NotBlank
+    @Size(min = 4, max = 12)
+    private String password;
+    @NotBlank
+    private String name;
 
     public static Member buildMember(Long id, MemberFormDTO memberFormDTO) {
         return new Member(id, memberFormDTO.memberId, memberFormDTO.password, memberFormDTO.name);

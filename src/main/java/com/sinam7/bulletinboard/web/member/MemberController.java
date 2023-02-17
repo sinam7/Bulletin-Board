@@ -1,14 +1,17 @@
 package com.sinam7.bulletinboard.web.member;
 
-import com.sinam7.bulletinboard.domain.member.MemberRepository;
-import com.sinam7.bulletinboard.web.member.dto.MemberFormDTO;
+import com.sinam7.bulletinboard.domain.member.dto.MemberFormDTO;
+import com.sinam7.bulletinboard.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -16,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     // 회원 목록
     @GetMapping("")
     public String memberList(Model model)
     {
         log.info("memberList() call");
-        model.addAttribute("members", memberRepository.findAll());
+        model.addAttribute("members", memberService.findAll());
         return "members/memberList";
     }
 
@@ -39,19 +42,26 @@ public class MemberController {
     public String addMember(@Validated @ModelAttribute("member") MemberFormDTO memberFormDTO, BindingResult bindingResult) {
         log.info("addMember() call - POST");
 
-        if (bindingResult.hasErrors()) {
+        // 도메인 Validation 처리 -> @Validated + BindingResult로 처리
+
+        // 서비스 Validation throw 처리
+        List<FieldError> hasFieldErrors = memberService.register(memberFormDTO);
+        if (bindingResult.hasErrors() || !hasFieldErrors.isEmpty()) {
+            for (FieldError fieldError : hasFieldErrors) {
+                bindingResult.addError(fieldError);
+            }
+
             log.error("addMember() ex = {}", bindingResult);
             return "members/addMemberForm";
         }
 
-        memberRepository.save(memberFormDTO);
         return "redirect:/members";
     }
 
     @GetMapping("/edit/{id}")
     public String editMemberForm(@PathVariable("id") Long id, Model model) {
         log.info("editMemberForm() call - GET");
-        model.addAttribute("member", memberRepository.findById(id));
+        model.addAttribute("member", memberService.findById(id));
         return "members/editMemberForm";
     }
 
@@ -65,7 +75,7 @@ public class MemberController {
             return "members/editMemberForm";
         }
 
-        memberRepository.updateMember(id, memberFormDTO);
+        memberService.updateMember(id, memberFormDTO);
         return "redirect:/members";
     }
 }
