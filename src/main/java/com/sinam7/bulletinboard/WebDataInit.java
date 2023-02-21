@@ -19,10 +19,9 @@ public class WebDataInit {
     @PostConstruct
     public void init() {
         MemberFormDTO memberFormDTO = new MemberFormDTO("test", "test", "테스터");
+        Member member = MemberFormDTO.buildMember(MemberRepository.addSequence(), memberFormDTO);
 
-        Long memberId = memberRepository.save(memberFormDTO);
-
-        Member member = memberRepository.findById(memberId);
+        memberRepository.save(member);
 
         Article article = new Article();
         article.setTitle("testTitle");

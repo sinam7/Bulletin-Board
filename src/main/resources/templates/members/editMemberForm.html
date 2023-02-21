@@ -25,8 +25,11 @@
     <form action="memberList.html" th:object="${member}" th:action method="post">
         <div class="pt-3 form-group">
             <label>로그인 ID
-                <input type="text" class="form-control" th:field="*{memberId}" placeholder="ID" readonly>
+                <input type="text" class="form-control" th:field="*{memberId}" placeholder="ID"
+                       th:errorclass="field-error">
             </label>
+            <div th:class="field-error" th:errors="*{memberId}">비밀번호 오류</div>
+
         </div>
         <div class="pt-3 form-group">
             <label>비밀번호

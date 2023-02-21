@@ -23,8 +23,7 @@ public class MemberController {
 
     // 회원 목록
     @GetMapping("")
-    public String memberList(Model model)
-    {
+    public String memberList(Model model) {
         log.info("memberList() call");
         model.addAttribute("members", memberService.findAll());
         return "members/memberList";
@@ -45,12 +44,18 @@ public class MemberController {
         // 도메인 Validation 처리 -> @Validated + BindingResult로 처리
 
         // 서비스 Validation throw 처리
-        List<FieldError> hasFieldErrors = memberService.register(memberFormDTO);
-        if (bindingResult.hasErrors() || !hasFieldErrors.isEmpty()) {
+        List<FieldError> hasFieldErrors = null;
+        if (!bindingResult.hasErrors()) {   // 바인딩에 문제가 없으면 가입 시도
+            hasFieldErrors = memberService.register(memberFormDTO);
+        }
+
+        if (hasFieldErrors != null) { // validation에 문제가 있었으면 에러 추가
             for (FieldError fieldError : hasFieldErrors) {
                 bindingResult.addError(fieldError);
             }
+        }
 
+        if (bindingResult.hasErrors()) { // bindingResult 에러 뿌리고 되돌아가기
             log.error("addMember() ex = {}", bindingResult);
             return "members/addMemberForm";
         }
@@ -70,8 +75,19 @@ public class MemberController {
                              @Validated @ModelAttribute("member") MemberFormDTO memberFormDTO, BindingResult bindingResult) {
         log.info("editMemberForm() call - POST");
 
-        if (bindingResult.hasErrors()) {
-            log.error("addMember() ex = {}", bindingResult);
+        List<FieldError> hasFieldErrors = null;
+        if (!bindingResult.hasErrors()) {   // 바인딩에 문제가 없으면 업데이트 시도
+            hasFieldErrors = memberService.updateMember(id, memberFormDTO);
+        }
+
+        if (hasFieldErrors != null) {   // 업데이트 중 Validation에 문제가 있었으면 bindingResult에 추가
+            for (FieldError fieldError : hasFieldErrors) {
+                bindingResult.addError(fieldError);
+            }
+        }
+
+        if (bindingResult.hasErrors()) {    // bindingResult 뿌리고 되돌아가기
+            log.error("editMember() ex = {}", bindingResult);
             return "members/editMemberForm";
         }
 
