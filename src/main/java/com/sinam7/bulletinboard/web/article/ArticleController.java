@@ -30,6 +30,7 @@ public class ArticleController {
         return "article/articleView";
     }
 
+    // TODO 새 글 작성시 로그인 여부 검증
     @GetMapping("/add")
     public String addArticleForm(@ModelAttribute("article") Article article) {
         log.info("addArticleForm() call - GET");
@@ -43,6 +44,7 @@ public class ArticleController {
         return "redirect:/board/" + id;
     }
 
+    // TODO 글 수정시 작성자 일치 여부 검증
     @GetMapping("/{id}/edit")
     public String editArticleForm(@PathVariable("id") Long id, Model model) {
         log.info("editArticle({}) call", id);
